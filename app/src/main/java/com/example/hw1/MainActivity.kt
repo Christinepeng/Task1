@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
                 isLayoutCompleted = true
                 val containerHeight = containerLayout.height
 
-
                 // create some data
                 val dataList = mutableListOf<String>()
                 for (i in 1..100) {
@@ -53,19 +52,17 @@ class MainActivity : AppCompatActivity() {
                 subLinearLayout.setPadding(20, 0, 20, 0)
 
                 for (data in dataList) {
-                    Log.e("bear", data)
                     val textView = TextView(this)
                     textView.text = data
 
-                    // 测量文本视图的宽度和高度
+                    // measure width & height of the textView
                     textView.measure(0, 0)
                     val width = textView.measuredWidth
                     val height = textView.measuredHeight
 
-                    // 检查当前行是否可以容纳新视图
-                    Log.e("bear", "currentY + height = ${currentY + height}, containerHeight = $containerHeight")
+                    // check if height exceeds container
                     if (currentY + height > containerHeight) {
-                        // 切换到下一列
+                        // next column
                         currentX += columnWidths.maxOrNull() ?: 0
                         currentY = 0
                         containerLayout.addView(subLinearLayout)
@@ -73,22 +70,12 @@ class MainActivity : AppCompatActivity() {
                         subLinearLayout.orientation = LinearLayout.VERTICAL
                         subLinearLayout.layoutParams = layoutParams
                         subLinearLayout.setPadding(20, 0, 20, 0)
-                        Log.e("bear", "--next column--")
                     }
 
-                    // 将视图放置在正确的位置
-//                    textView.x = currentX.toFloat()
-//                    textView.y = currentY.toFloat()
-
-                    Log.e("bear", "x = ${textView.x}, y = ${textView.y}")
-
-                    // 更新当前列的最大宽度
+                    // update X & Y
                     columnWidths.add(width)
-
-                    // 更新当前y坐标
                     currentY += height
 
-                    // 将视图添加到容器中
                     subLinearLayout.addView(textView)
                 }
 
